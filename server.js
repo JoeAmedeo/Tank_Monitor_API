@@ -1,46 +1,55 @@
 var express = require('express');
 var bodyParser = require('body-parser');
-var mysql = require('mysql')
+var mongodb = require('mongodb');
 
-var connection = mysql.createConnection({
-	host: "localhost",
-	user: "root",
-	password: "",
-	database: "SensorData"
-});
-
-function getQueryString(limit){
-	return "(SELECT * FROM Data WHERE GPIO_number = 17 ORDER BY Time DESC LIMIT " + limit + ") UNION (SELECT * FROM Data WHERE GPIO_number = 18 ORDER BY Time DESC LIMIT " + limit + ")";
-};
+var mongoClient = mongodb.MongoClient;
+var connectionString = process.env.MONGO_CONNECTION_STRING;
 
 var app = express();
 
 app.use(bodyParser.json());
 
 app.get('/', function(req, res) {
-	connection.connect(function(err) {
-		if (err) throw err;
-		console.log("connected to db");
-		connection.query(getQueryString(1), function(err, result) {
-			if (err) throw err;
-			console.log(result);
-			res.send(result);
-		});
-	});
+	mongoClient.connect(connectionString, function(error, database){
+		if (error) throw error;
+		var dbo = database.db("SensorData");
+		var query17 = { gpio_number: "17"};
+		var query18 = { gpio_number: "18"};
+		var sortObject = { time: -1 };
+		var result17 = dbo.collection("Data").sort(sortObject).findOne(query17);
+		var result18 = dbo.collection("Data").sort(sortObject).findOne(query18);
+		var finalResult = { 17: result17, 18: result18 };
+		res.send(finalResult);
+		db.close();
+	})
 });
 
 app.get('/:returnCount', function(req, res) {
-	connection.connect(function(err) {
-		if (err) throw err;
-		console.log("connected to db via GET /:returnCount");
-		connection.query(getQueryString(req.params.returnCount), function(err, result) {
-			if (err) throw err;
-			console.log(result);
-			res.send(result);
-		});
-	});
+	mongoClient.connect(connectionString, function(error, database){
+		if (error) throw error;
+		var dbo = database.db("SensorData");
+		var query17 = { gpio_number: "17"};
+		var query18 = { gpio_number: "18"};
+		var sortObject = { time: -1 };
+		var result17 = dbo.collection("Data").sort(sortObject).find(query17).limit(req.params.returnCount).toArray();
+		var result18 = dbo.collection("Data").sort(sortObject).find(query18).limit(req.params.returnCount).toArray();
+		var finalResult = { 17: result17, 18: result18 };
+		res.send(finalResult);
+		db.close();
+	})
 });
 
-app.update
+app.put('/', function(req, res){
+	mongoClient.connect(connectionString, function(error, database){
+		if (error) throw error;
+		var dbo = database.db("SensorData");
+		dbo.collection("Data").insertOne(request.body, function(error, response){
+			if (error) throw error
+			res.status(204);
+			res.send();
+			db.close();
+		})
+	})
+});
 
 app.listen(8080);
