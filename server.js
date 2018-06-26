@@ -31,8 +31,8 @@ app.get('/:returnCount', function(req, res) {
 		var query17 = { gpio_number: "17"};
 		var query18 = { gpio_number: "18"};
 		var sortObject = { time: -1 };
-		var result17 = dbo.collection("Data").find(query17).sort(sortObject).limit(req.params.returnCount).toArray();
-		var result18 = dbo.collection("Data").find(query18).sort(sortObject).limit(req.params.returnCount).toArray();
+		var result17 = dbo.collection("Data").find(query17).sort(sortObject).limit(parseInt(req.params.returnCount)).toArray();
+		var result18 = dbo.collection("Data").find(query18).sort(sortObject).limit(parseInt(req.params.returnCount)).toArray();
 		var finalResult = { 17: result17, 18: result18 };
 		res.send(finalResult);
 		db.close();
