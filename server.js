@@ -20,7 +20,7 @@ app.get('/', function(req, res) {
 		var result18 = dbo.collection("Data").find(query18).sort(sortObject).limit(1);
 		var finalResult = { 17: result17, 18: result18 };
 		res.send(JSON.stringify(finalResult));
-		db.close();
+		dbo.close();
 	})
 });
 
@@ -35,7 +35,7 @@ app.get('/:returnCount', function(req, res) {
 		var result18 = dbo.collection("Data").find(query18).sort(sortObject).limit(parseInt(req.params.returnCount)).toArray();
 		var finalResult = { 17: result17, 18: result18 };
 		res.send(finalResult);
-		db.close();
+		dbo.close();
 	})
 });
 
@@ -47,7 +47,7 @@ app.put('/', function(req, res){
 			if (error) throw error
 			res.status(204);
 			res.send();
-			db.close();
+			dbo.close();
 		})
 	})
 });
