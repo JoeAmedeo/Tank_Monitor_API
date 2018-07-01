@@ -17,8 +17,8 @@ app.get('/', function(req, res) {
 		var query17 = { gpio_number: "17"};
 		var query18 = { gpio_number: "18"};
 		var sortObject = { time: -1 };
-		result17.sensor1 = dbo.collection("Data").find(query17).sort(sortObject).limit(1);
-		result18.sensor2 = dbo.collection("Data").find(query18).sort(sortObject).limit(1);
+		finalResult.sensor1 = dbo.collection("Data").find(query17).sort(sortObject).limit(1);
+		finalResult.sensor2 = dbo.collection("Data").find(query18).sort(sortObject).limit(1);
 		res.send(JSON.stringify(finalResult));
 		database.close();
 	})
