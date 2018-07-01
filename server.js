@@ -19,7 +19,7 @@ app.get('/', function(req, res) {
 		var result17 = dbo.collection("Data").find(query17).sort(sortObject).limit(1);
 		var result18 = dbo.collection("Data").find(query18).sort(sortObject).limit(1);
 		var finalResult = { "17": result17, "18": result18 };
-		res.send(JSON.stringify(finalResult));
+		res.send(JSON.parse(JSON.stringify(finalResult)));
 		database.close();
 	})
 });
