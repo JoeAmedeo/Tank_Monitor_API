@@ -13,12 +13,13 @@ app.get('/', function(req, res) {
 	mongoClient.connect(connectionString, function(error, database){
 		if (error) throw error;
 		var finalResult = {};
-		var dbo = database.db("SensorData");
-		var query17 = { gpio_number: "17"};
-		var query18 = { gpio_number: "18"};
+		var dbo = database.db('SensorData');
+		var query17 = { gpio_number: '17'};
+		var query18 = { gpio_number: '18'};
 		var sortObject = { time: -1 };
-		finalResult.sensor1 = dbo.collection("Data").find(query17).sort(sortObject).limit(1);
-		finalResult.sensor2 = dbo.collection("Data").find(query18).sort(sortObject).limit(1);
+		finalResult.sensor1 = dbo.collection('Data').find(query17).sort(sortObject).limit(1);
+		finalResult.sensor2 = dbo.collection('Data').find(query18).sort(sortObject).limit(1);
+		res.setHeader('Content-Type', 'application/json')
 		res.send(JSON.stringify(finalResult));
 		database.close();
 	})
@@ -27,13 +28,13 @@ app.get('/', function(req, res) {
 app.get('/:returnCount', function(req, res) {
 	mongoClient.connect(connectionString, function(error, database){
 		if (error) throw error;
-		var dbo = database.db("SensorData");
-		var query17 = { gpio_number: "17"};
-		var query18 = { gpio_number: "18"};
+		var dbo = database.db('SensorData');
+		var query17 = { gpio_number: '17'};
+		var query18 = { gpio_number: '18'};
 		var sortObject = { time: -1 };
-		var result17 = dbo.collection("Data").find(query17).sort(sortObject).limit(parseInt(req.params.returnCount)).toArray();
-		var result18 = dbo.collection("Data").find(query18).sort(sortObject).limit(parseInt(req.params.returnCount)).toArray();
-		var finalResult = { "17": result17, "18": result18 };
+		var result17 = dbo.collection('Data').find(query17).sort(sortObject).limit(parseInt(req.params.returnCount)).toArray();
+		var result18 = dbo.collection('Data').find(query18).sort(sortObject).limit(parseInt(req.params.returnCount)).toArray();
+		var finalResult = { '17': result17, '18': result18 };
 		res.send(finalResult);
 		database.close();
 	})
@@ -42,8 +43,8 @@ app.get('/:returnCount', function(req, res) {
 app.put('/', function(req, res){
 	mongoClient.connect(connectionString, function(error, database){
 		if (error) throw error;
-		var dbo = database.db("SensorData");
-		dbo.collection("Data").insertOne(request.body, function(error, response){
+		var dbo = database.db('SensorData');
+		dbo.collection('Data').insertOne(request.body, function(error, response){
 			if (error) throw error
 			res.status(204);
 			res.send();
