@@ -12,14 +12,14 @@ app.use(bodyParser.json());
 app.get('/', function(req, res) {
 	mongoClient.connect(connectionString, function(error, database){
 		if (error) throw error;
+		var finalResult = {};
 		var dbo = database.db("SensorData");
 		var query17 = { gpio_number: "17"};
 		var query18 = { gpio_number: "18"};
 		var sortObject = { time: -1 };
-		var result17 = dbo.collection("Data").find(query17).sort(sortObject).limit(1);
-		var result18 = dbo.collection("Data").find(query18).sort(sortObject).limit(1);
-		var finalResult = { "17": result17, "18": result18 };
-		res.send(JSON.parse(JSON.stringify(finalResult)));
+		result17.sensor1 = dbo.collection("Data").find(query17).sort(sortObject).limit(1);
+		result18.sensor2 = dbo.collection("Data").find(query18).sort(sortObject).limit(1);
+		res.send(JSON.stringify(finalResult));
 		database.close();
 	})
 });
