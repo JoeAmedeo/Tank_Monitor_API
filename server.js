@@ -17,13 +17,15 @@ app.get('/', function(req, res) {
 		var query17 = { gpio_number: '17'};
 		var query18 = { gpio_number: '18'};
 		var sortObject = { time: -1 };
-		finalResult.sensor1 = dbo.collection('Data').find(query17).sort(sortObject).limit(1).toArray(function(err, result){
+		dbo.collection('Data').find(query17).sort(sortObject).limit(1).toArray(function(err, result){
 			if (err) throw err;
 			console.log(result);
+			finalResult.sensor1 = result;
 		});
-		finalResult.sensor2 = dbo.collection('Data').find(query18).sort(sortObject).limit(1).toArray(function(err, result){
+		dbo.collection('Data').find(query18).sort(sortObject).limit(1).toArray(function(err, result){
 			if (err) throw err;
 			console.log(result);
+			finalResult.sensor2 = result
 		});
 		console.log(finalResult);
 		res.json(finalResult);
