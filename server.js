@@ -18,13 +18,14 @@ app.get('/', function(req, res) {
 		var query18 = { gpio_number: '18'};
 		var sortObject = { time: -1 };
 		finalResult.sensor1 = dbo.collection('Data').find(query17).sort(sortObject).limit(1).toArray(function(err, result){
-			if (err) throw err
-			console.log(result)
+			if (err) throw err;
+			console.log(result);
 		});
 		finalResult.sensor2 = dbo.collection('Data').find(query18).sort(sortObject).limit(1).toArray(function(err, result){
-			if (err) throw err
-			console.log(result)
+			if (err) throw err;
+			console.log(result);
 		});
+		console.log(finalResult);
 		res.json(finalResult);
 		database.close();
 	})
@@ -46,6 +47,7 @@ app.get('/:returnCount', function(req, res) {
 			console.log(result)
 		});
 		var finalResult = { '17': result17, '18': result18 };
+		console.log(finalResult);
 		res.json(finalResult);
 		database.close();
 	})
