@@ -22,12 +22,12 @@ app.get('/', function(req, res) {
 		dbo.collection('Data').find(query17).sort(sortObject).limit(1).toArray(function(err, result){
 			if (err) throw err;
 			console.log(result);
-			sensor1.push(result);
+			sensor1 = result;
 		});
 		dbo.collection('Data').find(query18).sort(sortObject).limit(1).toArray(function(err, result){
 			if (err) throw err;
 			console.log(result);
-			sensor2.push(result);
+			sensor2 = result;
 		});
 		finalResult.sensor1 = sensor1;
 		finalResult.sensor2 = sensor2;
