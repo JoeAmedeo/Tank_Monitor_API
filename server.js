@@ -17,8 +17,14 @@ app.get('/', function(req, res) {
 		var query17 = { gpio_number: '17'};
 		var query18 = { gpio_number: '18'};
 		var sortObject = { time: -1 };
-		finalResult.sensor1 = dbo.collection('Data').find(query17).sort(sortObject).limit(1);
-		finalResult.sensor2 = dbo.collection('Data').find(query18).sort(sortObject).limit(1);
+		finalResult.sensor1 = dbo.collection('Data').find(query17).sort(sortObject).limit(1).toArray(function(err, result){
+			if (err) throw err
+			console.log(result)
+		});
+		finalResult.sensor2 = dbo.collection('Data').find(query18).sort(sortObject).limit(1).toArray(function(err, result){
+			if (err) throw err
+			console.log(result)
+		});
 		res.json(finalResult);
 		database.close();
 	})
@@ -31,8 +37,14 @@ app.get('/:returnCount', function(req, res) {
 		var query17 = { gpio_number: '17'};
 		var query18 = { gpio_number: '18'};
 		var sortObject = { time: -1 };
-		var result17 = dbo.collection('Data').find(query17).sort(sortObject).limit(parseInt(req.params.returnCount)).toArray();
-		var result18 = dbo.collection('Data').find(query18).sort(sortObject).limit(parseInt(req.params.returnCount)).toArray();
+		var result17 = dbo.collection('Data').find(query17).sort(sortObject).limit(parseInt(req.params.returnCount)).toArray(function(err, result){
+			if (err) throw err
+			console.log(result)
+		});
+		var result18 = dbo.collection('Data').find(query18).sort(sortObject).limit(parseInt(req.params.returnCount)).toArray(function(err, result){
+			if (err) throw err
+			console.log(result)
+		});
 		var finalResult = { '17': result17, '18': result18 };
 		res.json(finalResult);
 		database.close();
@@ -43,7 +55,7 @@ app.put('/', function(req, res){
 	mongoClient.connect(connectionString, function(error, database){
 		if (error) throw error;
 		var dbo = database.db('SensorData');
-		dbo.collection('Data').insertOne(request.body, function(error, response){
+		dbo.collection('Data').insertOne(req.body, function(error, res){
 			if (error) throw error
 			res.status(204);
 			res.send();
