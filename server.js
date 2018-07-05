@@ -13,7 +13,7 @@ app.get('/', function(req, res) {
 	mongoClient.connect(connectionString, function(error, database){
 		if (error) throw error;
 		var finalResult = {'sensor1': null, 'sensor2': null};
-		var senor1 = [];
+		var sensor1 = [];
 		var sensor2 = [];
 		var dbo = database.db('SensorData');
 		var query17 = { gpio_number: '17'};
