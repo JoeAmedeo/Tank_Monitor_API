@@ -17,31 +17,24 @@ app.get('/', function(req, res) {
 			if (err) throw err;
 			console.log(result);
 			res.json(result);
+			database.close();
 		});
 	})
 });
 
-app.get('/:returnCount', function(req, res) {
+app.get('/:sensorNumber/:rowCount', function(req, res) {
 	mongoClient.connect(connectionString, function(error, database){
 		if (error) throw error;
-		var finalResult = {'sensor1': [], 'sensor2': []};
 		var dbo = database.db('SensorData');
-		var query17 = { gpio_number: '17'};
-		var query18 = { gpio_number: '18'};
+		var query = { gpio_number: req.params.sensorNumber};
 		var sortObject = { time: -1 };
-		var result17 = dbo.collection('Data').find(query17).sort(sortObject).limit(parseInt(req.params.returnCount)).toArray(function(err, result){
+		dbo.collection('Data').find(query).sort(sortObject).limit(parseInt(req.params.rowCount)).toArray(function(err, result){
 			if (err) throw err;
 			console.log(result);
-			finalResult.sensor1.push(result);
+			res.json(result);
+			database.close();
 		});
-		var result18 = dbo.collection('Data').find(query18).sort(sortObject).limit(parseInt(req.params.returnCount)).toArray(function(err, result){
-			if (err) throw err;
-			console.log(result);
-			finalResult.sensor2.push(result);
-		});
-		console.log(finalResult);
-		res.json(finalResult);
-		database.close();
+		
 	})
 });
 
