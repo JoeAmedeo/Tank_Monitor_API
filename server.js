@@ -51,7 +51,7 @@ app.put('/', function(req, res){
 	mongoClient.connect(connectionString, function(error, database){
 		if (error) throw error;
 		var dbo = database.db('SensorData');
-		dbo.collection('Data').insertOne(req.body, function(error, res){
+		dbo.collection('Data').insertOne(req.body, function(error, result){
 			if (error) throw error
 			res.status(204);
 			res.send();
