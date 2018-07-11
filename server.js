@@ -35,8 +35,9 @@ app.post('/', function(req, res) {
 		if (error) throw error;
 		var dbo = database.db('SensorData');
 		var query = { gpio_number: req.body.sensorNumber};
-		var sortObject = { time: -1 };
-		dbo.collection('Data').find(query).sort(sortObject).limit(parseInt(req.body.rowCount)).toArray(function(err, result){
+		var limit = parseInt(req.body.rowCount);
+		var sort = { time: -1 };
+		dbo.collection('Data').find(query).sort(sort).limit(limit).toArray(function(err, result){
 			if (err) throw err;
 			console.log(result);
 			res.json(result);
@@ -51,8 +52,28 @@ app.put('/', function(req, res){
 	mongoClient.connect(connectionString, function(error, database){
 		if (error) throw error;
 		var dbo = database.db('SensorData');
-		dbo.collection('Data').insertOne(req.body, function(error, result){
-			if (error) throw error
+		dbo.collection('Data').insertOne(req.body, function(err, result){
+			if (err) throw err
+			res.status(204);
+			res.send();
+			database.close();
+		})
+	})
+});
+
+/*
+ * DELETE: This will take a JSON object as an input containing sensorNumber
+ * sensorNumber will be used to query the database for a given gpio number
+ * this function will just delete the oldest entry of the given sensor number.
+ */
+app.delete('/', function (req, res){
+	mongoClient.connect(connectionString, function(error, database){
+		if (error) throw error;
+		var dbo = database.db('SensorData');
+		var query = { gpio_number: req.body.sensorNumber };
+		var sort = {time: 1};
+		dbo.collection('Data').sort(sort).DeleteOne(query, function(err, result){
+			if (err) throw err;
 			res.status(204);
 			res.send();
 			database.close();
