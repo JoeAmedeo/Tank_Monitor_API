@@ -16,14 +16,14 @@ app.use(bodyParser.json());
  * @apiGroup TANK_MONITOR
  *
  * @apiSuccess {Number} _id 		Unique identifier for the entry.
- * @apiSuccess {Number} gpio_number Number which corresponds to a given sensor.
+ * @apiSuccess {Number} sensorNumber Number which corresponds to a given sensor.
  * @apiSuccess {String} time 		Date and Time at which this sensor reading occured.
  * @apiSuccess {Number} tempurature Tempurature the given sensor read.
  * @apiSuccess {Number} humidity 	Humidity the given sensor read.
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
- *     [{"_id":"5b2252333ec414b3e46915e0","gpio_number":"17","time":"2018-06-14 12:00:00","tempurature":"30.5","humidity":"60.711"},{"_id":"5b2252b73ec414b3e46915e1","gpio_number":"18","time":"2018-06-14 12:00:00","tempurature":"30.5","humidity":"58.312"}]
+ *     [{"_id":"5b2252333ec414b3e46915e0","sensorNumber":"17","time":"2018-06-14 12:00:00","tempurature":"30.5","humidity":"60.711"},{"_id":"5b2252b73ec414b3e46915e1","sensorNumber":"18","time":"2018-06-14 12:00:00","tempurature":"30.5","humidity":"58.312"}]
  *
  */
 app.get('/', function(req, res) {
@@ -75,21 +75,21 @@ app.get('/count', function(req, res) {
  * @apiParam {Number} rowCount The number of rows you want returned
  *
  * @apiSuccess {Number} _id Unique 	identifier for the entry.
- * @apiSuccess {Number} gpio_number Number which corresponds to a given sensor.
+ * @apiSuccess {Number} sensorNumber Number which corresponds to a given sensor.
  * @apiSuccess {String} time 		Date and Time at which this sensor reading occured.
  * @apiSuccess {Number} tempurature Tempurature the given sensor read.
  * @apiSuccess {Number} humidity 	Humidity the given sensor read.
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 200 OK
- *     [{"_id":"5b2252333ec414b3e46915e0","gpio_number":"17","time":"2018-06-14 12:00:00","tempurature":"30.5","humidity":"60.711"}]
+ *     [{"_id":"5b2252333ec414b3e46915e0","sensorNumber":"17","time":"2018-06-14 12:00:00","tempurature":"30.5","humidity":"60.711"}]
  *
  */
 app.post('/', function(req, res) {
 	mongoClient.connect(connectionString, function(error, database){
 		if (error) throw error;
 		var dbo = database.db('SensorData');
-		var query = { gpio_number: req.body.sensorNumber};
+		var query = { sensorNumber: req.body.sensorNumber};
 		var limit = parseInt(req.body.rowCount);
 		var sort = { time: -1 };
 		dbo.collection('Data').find(query).sort(sort).limit(limit).toArray(function(err, result){
@@ -106,7 +106,7 @@ app.post('/', function(req, res) {
  * @apiName TANK_MONITOR_API
  * @apiGroup TANK_MONITOR
  *
- * @apiParam {Number} gpio_number 	Number which corresponds to a given sensor.
+ * @apiParam {Number} sensorNumber 	Number which corresponds to a given sensor.
  * @apiParam {String} time 			Date and Time at which this sensor reading occured.
  * @apiParam {Number} tempurature 	Tempurature the given sensor read.
  * @apiParam {Number} humidity 		Humidity the given sensor read.
@@ -143,7 +143,7 @@ app.delete('/', function (req, res){
 	mongoClient.connect(connectionString, function(error, database){
 		if (error) throw error;
 		var dbo = database.db('SensorData');
-		var query = { gpio_number: req.body.sensorNumber };
+		var query = { sensorNumber: req.body.sensorNumber };
 		var sort = {time: 1};
 		dbo.collection('Data').sort(sort).DeleteOne(query, function(err, result){
 			if (err) throw err;
