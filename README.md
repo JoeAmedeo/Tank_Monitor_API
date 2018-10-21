@@ -27,7 +27,7 @@ Seeing as Javascript is pretty trendy right now, and the convenient libraries th
 - [x] Unit Tests
 - [x] Documentation / Comments
 - [x] Container Implementation
-- [] Framework Testing
-  - [] Mocha / Chai Unit Tests
-  - [] Mongoose
-- [] The Things I Haven't Thought of Yet
+- [ ] Framework Testing
+  - [ ] Mocha / Chai Unit Tests
+  - [ ] Mongoose
+- [ ] The Things I Haven't Thought of Yet
